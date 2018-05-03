@@ -15,8 +15,8 @@
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "scripts": {
-    "build:dev": "rollup -c -w",
-    "build:release": "rollup -c",
+    "build:watch": "rollup -c -w",
+    "build": "rollup -c",
     "start": "http-server ./examples -o"
   }
 }
