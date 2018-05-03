@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="./ultra-app.umd.js"></script>
+  <script type="text/javascript">
+    const { app, h } = window.ultraApp;
+
+    const initialState = { counter: 20, results: [] };
+    const reducer = new Worker('./reducer.js');
+    const view = state => {
+      const fibCount = state.fibonacciCount || state.counter
+      return (
+        h('div', {}, [
+          h('div', {}, `Counter: ${state.counter}`),
+          h(
+            'button',
+            { type: 'button', onclick: () => dispatch({ type: 'COUNTER', increm: 1 }) },
+            '+1',
+          ),
+          h(
+            'button',
+            { type: 'button', onclick: () => dispatch({ type: 'COUNTER', increm: -1 }) },
+            '-1',
+          ),
+          h(
+            'button',
+            { type: 'button', onclick: () => dispatch({ type: 'FIBONACCI' }) },
+            'Calculate Fibonacci Number',
+          ),
+          h('ul', {}, state.results.map(r => (
+            h('li', { key: r.id }, `fib(${r.number}) = ${r.result || 'calculating...'}`)
+          ))),
+        ])
+      );
+    };
+
+    const dispatch = app(
+      initialState,
+      new Worker('./reducer.js'),
+      view,
+      document.getElementById('app'),
+    );
+
+  </script>
+</body>
+</html>
